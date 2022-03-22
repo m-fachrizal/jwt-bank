@@ -1,0 +1,188 @@
+Create a repository for the assignment and share with mail id : amit.singh@midasteknologi.com
+
+Q1: Create database tables and keys as mentioned below:
+	1.) table name: user_details
+		columns: user_id character varying(5), account_no Integer(10), password character varying
+		primary key: (user_id,account_no)
+		
+	2.) table name: account_details
+		columns: account_no Integer(10), available_balance Double(12)
+		primary key: account_no
+		
+	3.) table name: transaction_details
+		columns: account_no Integer(10), transaction_flag Character(1), transaction_amount Double(12), reference_number Integer(10)
+		foreign key: account_no
+
+Note: transaction_flag values can be C (credit) or D (debit)
+
+Q2: Create the webservices  as mentioned below:
+	1.) Login api.
+	2.) Online fund transfer from an transaction account to beneficiary account (FT) api.
+	3.) Balance check api.
+	4.) Transaction history api.
+	
+Request and Response
+Note: 	1) The default currency is INR
+		2) The data will be present in response only if responseCode = 00 (Success)
+		3) Validation of token in subsequent requests after login.
+
+1.) Login:
+	RequestHeader => Content-Type : application/json
+	RequestBody =>	{
+						"userId":"",
+						"password":""
+					}
+					
+	Response => {
+					"responseCode":"",
+					"responseDesc":"",
+					"data": {
+								"accessToken": JwtToken
+							}
+				}
+
+JwtToken: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ0TW9nU2hKUXlYSlRSbmRyV2ZxZFotRVQ1S09jaUo1eXFHcExBa05VRGkwIn0.eyJleHAiOjE1OTk2NDMzNzQsImlhdCI6MTU5OTY0Mjc3NCwianRpIjoiOWU1YjExNmUtMTI4ZC00NGQ2LWIzMzctOWZjOTQyNzVhNjk4IiwiaXNzIjoiaHR0cDovL2VjMi01Mi0yMjEtMzMtMTE4LmFwLXNvdXRoZWFzdC0xLmNvbXB1dGUuYW1hem9uYXdzLmNvbTo4MDgyL2F1dGgvcmVhbG1zL3JlY29uY2lsaWF0aW9uIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6Ijk1Yzg3YmJmLWRkYjAtNGIwMC05ZmQ1LTIyMjQ0YzkxZWJmOCIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlY29uY2lsaWF0aW9uLWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJkNTBkODZiYi04NWExLTRkOTktYjgzNS1jZDkwMzdlNmM5YTQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhc2luZ2giLCJlbWFpbCI6ImFzaW5naCJ9.ChGcCg_jIsx16eo8CgDpn0_BJz-V2O9S_0suVVjL1uZauu8bX3bG-Jk8rjke8xNgrc4kr-7x6AxklAT1t2YIUI2L46UyWJ7pXOMJnlf4j04VzClHi9qDCuhrR3n71LiWQauPnZoeLoTqlAQhSbr78El8OmKen3o6hdHw94SjgWBQ3Hz3YVsbykYj2kXJO2Ey2pqgZS64ILyICm7wAslEZjPhh2sIHkLnCA9SGay4PNzInl3XVUuIzV3hCGxgUg6xWQmxXkZ7vEzvJ1Tc4g29xIulpUPn5wugNIMLUhFhSWOSNAmm2oJLKmZD0UCc0mJLwf2F2OrLfDzZbHh1eancig
+
+2.) Fund Transfer:
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"amount":"",
+						"fromAccount":"",
+						"toAccount":""
+					}
+					
+	Response => {
+					"responseCode":"",
+					"responseDesc":"",
+					"data": {
+								"accountBalance":"",
+								"referenceNumber":""
+							}
+				}
+				
+3.) Balance:
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"accountNo":""
+					}
+					
+	Response => {
+					"responseCode":"",
+					"responseDesc":"",
+					"data": {
+								"accountBalance": ""
+							}
+				}
+				
+4.) Transaction History:
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"accountNo":""
+					}
+					
+	Response => {
+					"responseCode":"",
+					"responseDesc":"",
+					"data": {
+								"transactions": [
+													{
+														"amount":"",
+														"referenceNumber":""
+														"transactionFlag":""
+													}
+												]
+							}
+				}
+				
+
+
+
+Sample Requests and Response:
+1.) Login
+        {
+        	"userId":"ABC12345",
+        	"password":"password1"
+        }
+        					
+        {
+        	"responseCode":"00",
+        	"responseDesc":"Success",
+        	"data": {
+        				"accessToken": JwtToken
+        			}
+        }
+2.) 
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"amount":"1000.00",
+						"fromAccount":"1234567890",
+						"toAccount":"2345678901"
+					}
+					
+	Response => {
+					"responseCode":"00",
+					"responseDesc":"Success",
+					"data": {
+								"accountBalance":"3000.00",
+								"referenceNumber":"9087653421"
+							}
+				}
+
+3.)				
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"accountNo":"1234567890"
+					}
+					
+	Response => {
+					"responseCode":"00",
+					"responseDesc":"Success",
+					"data": {
+								"accountBalance": "3000.00"
+							}
+				}
+				
+4.) 
+	RequestHeader => Content-Type : application/json and Authorization : JwtToken (Issued in login)
+	RequestBody =>	{
+						"accountNo":"1234567890"
+					}
+					
+	Response => {
+					"responseCode":"00",
+					"responseDesc":"Success",
+					"data": {
+								"transactions": [
+													{
+														"amount":"1000.00",
+														"referenceNumber":"9087653421"
+														"transactionFlag":"D"
+													}
+												
+												]
+							}
+				}
+				
+Database Information:
+
+user_details
+user_id  account_no password
+ABC12345 1234567890 password1
+ABC12346 2345678901 password2
+
+before transfer
+account_details
+account_no  available_balance
+1234567890	4000.00
+2345678901	0.00
+
+after transfer
+account_details
+account_no  available_balance
+1234567890	3000.00
+2345678901	1000.00
+
+transaction_details
+account_no transaction_flag transaction_amount reference_number
+1234567890 		D				1000.00			9087653421
+2345678901 		C				1000.00			9087653421

@@ -26,7 +26,7 @@ public class TransactionDetails {
     @Size(min = 1, max = 1)
     private String transactionFlag;
 
-    @Column(scale = 2)
+    @Column
     private Double transactionAmount;
 
     @Column
