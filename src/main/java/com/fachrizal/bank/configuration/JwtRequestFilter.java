@@ -2,6 +2,7 @@ package com.fachrizal.bank.configuration;
 
 import com.fachrizal.bank.service.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,7 @@ It checks if the request has a valid JWT token.
 If it has a valid JWT Token then it sets the Authentication in the context,
 to specify that the current user is authenticated.
  */
-
+@Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -47,12 +48,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 userId = jwtTokenUtil.getUserIdFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                log.warn("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                log.warn("JWT Token has expired");
             }
         } else {
-            logger.warn("JWT Token is null or JWT Token does not begin with Bearer String");
+            log.warn("JWT Token is null or JWT Token does not begin with Bearer String");
         }
 
         //Once we get the token validate it.

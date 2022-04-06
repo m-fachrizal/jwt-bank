@@ -31,6 +31,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Override
     public ResponseEntity<?> createAuthenticationToken(LoginRequest authenticationRequest) {
 
         authenticate(authenticationRequest.getUserId(), authenticationRequest.getPassword());
